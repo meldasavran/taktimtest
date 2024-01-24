@@ -54,6 +54,17 @@ class Test_tobetoPlatformLogin():
         #listbox.select_by_index(0)
         
         #eğitim durumu
+        # Listbox'a tıklama
+        listbox_element = self.driver.find_element(By.XPATH, "//div[2]/div[2]/div/div/div[2]")
+        actions = ActionChains(self.driver)
+        actions.move_to_element(listbox_element).click_and_hold().perform()
+         # Listbox'tan bir öğe seçme
+        listbox_option = self.driver.find_element(By.XPATH, "//div[@id='react-select-2-option-0']")
+        actions = ActionChains(self.driver)
+        actions.move_to_element(listbox_option).release().perform()
+        # Seçilen öğeyi tıklama
+        self.driver.find_element(By.XPATH, "//div[2]/div/div/div/div/div[2]/div[2]").click()
+
         #bitmisdersler=WebDriverWait(self.driver,6).until(ec.visibility_of_element_located((By.XPATH,"/html/body/div[3]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/span[1]/input")))
         #bitmisdersler.click()
         #bitmisdersler = WebDriverWait(self.driver, 10).until(ec.presence_of_element_located((By.XPATH, "/html/body/div[3]/div/div/div[2]/div/div/div[1]/div/div[3]/div[2]/span[1]/input")))
