@@ -20,39 +20,22 @@ class Test_tobetoPlatformLogin():
     def teardown_metahod(self):
         self.driver.quit()
     
-    def getData():
-        excel = openpyxl.load_workbook("data/invalidLogin.xlsx")
-        sheet = excel["Sheet1"]
-        rows = sheet.max_row
-        data = []
-        for i in range(2,rows+1):
-            email = sheet.cell(i,1).value
-            password = sheet.cell(i,2).value
-            data.append((email,password))
-
-        return data
-    
-    
-    #1)Giriş yap alanı görüntülenebilir ve işlevselliği test edilecektir.
-    def test_visibility_of_login_page(self):
-        takvim = WebDriverWait(self.driver,10).until(ec.visibility_of_element_located((By.XPATH,"//*[@id='__next']/div/section[1]/div[2]/div")))
-        takvim.click()
-        takvim_page_title = WebDriverWait(self.driver,10).until(ec.visibility_of_element_located((By.XPATH,"/html/body/div[4]/div/div/div[1]/span")))
-        assert takvim_page_title.text == "Eğitim ve Etkinlik Takvimi", "Başlık 'Eğitim ve Etkinlik Takvimi' olarak bekleniyor."
-        assert takvim.is_displayed(), "Takvim simgesi görüntülenmiyor."
+     
+        
+    def test_takvim_visibility_of_login_page(self):
+        calender = WebDriverWait(self.driver,10).until(ec.visibility_of_element_located((By.XPATH,"//*[@id='__next']/div/section[1]/div[2]/div")))
+        calender.click()
+        calender_page_title = WebDriverWait(self.driver,10).until(ec.visibility_of_element_located((By.XPATH,"/html/body/div[4]/div/div/div[1]/span")))
+        assert calender_page_title.text == "Eğitim ve Etkinlik Takvimi", "Başlık 'Eğitim ve Etkinlik Takvimi' olarak bekleniyor."
+        assert calender.is_displayed(), "Takvim simgesi görüntülenmiyor."
         #aramacubuğu kontrolü
-        aramacubugu=WebDriverWait(self.driver,10).until(ec.visibility_of_element_located((By.XPATH,"//*[@id='search-event']")))
-        aramacubugu.click()
+        search_bar=WebDriverWait(self.driver,10).until(ec.visibility_of_element_located((By.XPATH,"//*[@id='search-event']")))
+        search_bar.click()
         arama_metni = "yazılım kalite"
-        aramacubugu.send_keys(arama_metni)
+        search_bar.send_keys(arama_metni)
         #eğitmenaramayapılacak
         
-        #egitmen=WebDriverWait(self.driver,6).until(ec.visibility_of_element_located((By.XPATH,"/html/body/div[3]/div/div/div[2]/div/div/div[1]/div/div[2]/div[2]/div/div[1]/div[2]")))
-        #egitmen.click()
-        #listbox_element = WebDriverWait(self.driver, 6).until(ec.visibility_of_element_located((By.XPATH, "/html/body/div[3]/div/div/div[2]/div/div/div[1]/div/div[2]/div[2]/div/div[1]/div[2]")))
-        #listbox = Select(listbox_element)
-        #listbox.select_by_index(0)
-        
+                
         #eğitim durumu
         # Listbox'a tıklama
         listbox_element = self.driver.find_element(By.XPATH, "//div[2]/div[2]/div/div/div[2]")
@@ -62,14 +45,44 @@ class Test_tobetoPlatformLogin():
         listbox_option = self.driver.find_element(By.XPATH, "//div[@id='react-select-2-option-0']")
         actions = ActionChains(self.driver)
         actions.move_to_element(listbox_option).release().perform()
-        
+        assert listbox_element.is_displayed(), "Listbox görüntülenmiyor."
+        assert listbox_option.is_displayed(), "Listbox öğe seçimi başarısız."
+       
+
         # Seçilen öğeyi tıklama
         self.driver.find_element(By.XPATH, "//div[2]/div/div/div/div/div[2]/div[2]").click()
- 
         self.driver.find_element(By.XPATH, "//input[@name='eventEnded']").click()
-        
         self.driver.find_element(By.XPATH, "//input[@name='eventContinue']").click()
-
         self.driver.find_element(By.XPATH, "//input[@name='eventBuyed']").click()
-
         self.driver.find_element(By.XPATH, "//input[@name='eventNotStarted']").click()
+         # Eğitim durumu kontrolü
+        assert self.driver.find_element(By.XPATH, "//input[@name='eventEnded']").is_selected(), "Eğitim durumu seçimi bekleniyor."
+        assert self.driver.find_element(By.XPATH, "//input[@name='eventContinue']").is_selected(), "Eğitim durumu seçimi bekleniyor."
+        assert self.driver.find_element(By.XPATH, "//input[@name='eventBuyed']").is_selected(), "Eğitim durumu seçimi bekleniyor."
+        assert self.driver.find_element(By.XPATH, "//input[@name='eventNotStarted']").is_selected(), "Eğitim durumu seçimi bekleniyor."
+
+        # Geri Button öğesini bulma
+        back_button = self.driver.find_element(By.XPATH, "//button[@title='geri']")
+        # Geri Button öğesine tıklama
+        back_button.click()
+        # Bugün Button öğesini bulma
+        today_button = self.driver.find_element(By.XPATH, "//button[@title='Bugün']")
+
+       # Bugün Button öğesine tıklama
+        today_button.click()
+       # ileri Button öğesini bulma
+        next_button = self.driver.find_element(By.XPATH, "//button[@title='ileri']")
+
+        #ileri  Button öğesine tıklama
+        next_button.click()
+        # hafta Button öğesini bulma
+        week_button = self.driver.find_element(By.XPATH, "//button[@title='Hafta']")
+
+        # hafta Button öğesine tıklama
+        week_button.click()
+        # ay Button öğesini bulma
+        day_button = self.driver.find_element(By.XPATH, "//button[@title='Gün']")
+
+        #ay Button öğesine tıklama
+        day_button.click()
+
